@@ -19,6 +19,9 @@ namespace Number {
     Complex& operator*=(const Complex &rhs);
     Complex& operator/=(const Complex &rhs);
     Complex& operator=(const Complex &rhs);
+    Complex& operator=(const T &rhs);  
+    Complex& operator+=(const T &rhs);
+    void sqrt();
   private:
     T real_;
     T imag_;
@@ -58,13 +61,33 @@ namespace Number {
     return *this;
   }
 
+  template<class  T>
+  Complex<T>& Complex<T>::operator=(const T &rhs)
+  {
+    real_ = rhs; 
+    imag_ = (T)0.0;
+    return *this;
+  }
 
+  template<class  T>
+  void Complex<T>::sqrt()
+  {
+    real_ = std::sqrt(real_);
+    imag_ = (T)0.0;
+  }
 
   template<class  T>
   Complex<T>& Complex<T>::operator+=(const Complex<T> &rhs)
   {
     real_ += rhs.real_;
     imag_ += rhs.imag_;
+    return *this;
+  }
+
+  template<class  T>
+  Complex<T>& Complex<T>::operator+=(const T &rhs)
+  {
+    real_ += rhs;  
     return *this;
   }
 
