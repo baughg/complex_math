@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "complex.h"
+#include "complex_array.h"
 
 int main()
 {
@@ -13,7 +14,11 @@ int main()
 
   d = a + b * a;
   c = a;
-  c /= b; 
+  c /= b;
+
+  Number::ComplexArray<double> arr1;
+
+  arr1 = d;
   return 0;
 }
 
