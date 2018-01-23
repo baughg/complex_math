@@ -7,8 +7,13 @@ namespace Number {
   {
   public:
     Complex();
+    Complex(Complex& init);
     Complex(T real, T imag);
     ~Complex();
+    Complex operator+(const Complex &rhs);
+    Complex operator-(const Complex &rhs);
+    Complex operator/(const Complex &rhs);
+    Complex operator*(const Complex &rhs);
     Complex& operator+=(const Complex &rhs);
     Complex& operator-=(const Complex &rhs);
     Complex& operator*=(const Complex &rhs);
@@ -23,6 +28,13 @@ namespace Number {
   Complex<T>::Complex()
     : real_(0.0),
     imag_(0.0)
+  {
+  }
+
+  template<class T>
+  Complex<T>::Complex(Complex<T> &init)
+    : real_(init.real_),
+    imag_(init.imag_)
   {
   }
 
@@ -46,12 +58,48 @@ namespace Number {
     return *this;
   }
 
+
+
   template<class  T>
   Complex<T>& Complex<T>::operator+=(const Complex<T> &rhs)
   {
     real_ += rhs.real_;
     imag_ += rhs.imag_;
     return *this;
+  }
+
+  template<class  T>
+  Complex<T> Complex<T>::operator+(const Complex<T> &rhs)
+  {
+    Complex sum;
+    sum.real_ = real_ + rhs.real_;
+    sum.imag_ = imag_ + rhs.imag_;
+    return sum;
+  }
+
+  template<class  T>
+  Complex<T> Complex<T>::operator-(const Complex<T> &rhs)
+  {
+    Complex sum;
+    sum.real_ = real_ - rhs.real_;
+    sum.imag_ = imag_ - rhs.imag_;
+    return sum;
+  }
+
+  template<class  T>
+  Complex<T> Complex<T>::operator*(const Complex<T> &rhs)
+  {
+    Complex sum(*this);
+    sum *= rhs; 
+    return sum;
+  }
+
+  template<class  T>
+  Complex<T> Complex<T>::operator/(const Complex<T> &rhs)
+  {
+    Complex sum(*this);
+    sum /= rhs;
+    return sum;
   }
 
   template<class  T>
