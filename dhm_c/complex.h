@@ -22,6 +22,7 @@ namespace Number {
     Complex& operator=(const T &rhs);  
     Complex& operator+=(const T &rhs);
     void sqrt();
+    void exp();
   private:
     T real_;
     T imag_;
@@ -74,6 +75,14 @@ namespace Number {
   {
     real_ = std::sqrt(real_);
     imag_ = (T)0.0;
+  }
+
+  template<class  T>
+  void Complex<T>::exp()
+  {
+    T real_scale = std::exp(real_);
+    real_ = cos(imag_) * real_scale;
+    imag_ = sin(imag_) * real_scale;
   }
 
   template<class  T>

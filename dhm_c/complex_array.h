@@ -16,11 +16,13 @@ namespace Number {
     ComplexArray& operator=(const Complex<T> &rhs);    
     ComplexArray& operator=(const T &rhs);
     ComplexArray& operator*=(const ComplexArray &rhs);
+    ComplexArray& operator*=(const Complex<T> &rhs);
     ComplexArray& operator/=(const ComplexArray &rhs);
     ComplexArray& operator+=(const ComplexArray &rhs);
     ComplexArray& operator=(const ComplexArray &rhs);
     ComplexArray& operator+=(const T &rhs);
     ComplexArray& sqrt();
+    ComplexArray& exp();
     void linear_x(
       const T &start,       
       const T &step);
@@ -94,6 +96,19 @@ namespace Number {
   }
 
   template<class T>
+  ComplexArray<T>& ComplexArray<T>::operator*=(const Complex<T> &rhs)
+  {
+    const uint32_t cells = M_ * N_;
+
+    for (uint32_t c = 0; c < cells; ++c)
+    {
+      array_[c] *= rhs;
+    }
+
+    return *this;
+  }
+
+  template<class T>
   ComplexArray<T>& ComplexArray<T>::operator/=(const ComplexArray<T> &rhs)
   {
     const uint32_t cells = M_ * N_;
@@ -127,6 +142,19 @@ namespace Number {
     for (uint32_t c = 0; c < cells; ++c)
     {
       array_[c].sqrt();
+    }
+
+    return *this;
+  }
+
+  template<class T>
+  ComplexArray<T>& ComplexArray<T>::exp()
+  {
+    const uint32_t cells = M_ * N_;
+
+    for (uint32_t c = 0; c < cells; ++c)
+    {
+      array_[c].exp();
     }
 
     return *this;

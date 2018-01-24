@@ -5,6 +5,8 @@
 #include "complex.h"
 #include "complex_array.h"
 
+#define M_PI   3.14159265358979323846264338327950288
+
 int main()
 {
   typedef double fpxx;
@@ -14,13 +16,18 @@ int main()
   const fpxx dy = (fpxx)8e-6;          // active pixel spacing
   const fpxx d = (fpxx)0.15;
   const fpxx lambda = (fpxx)650e-9;                // Wavelength of light(peak....as its an LED!!)
-  const uint32_t N = 2048;
+  //const uint32_t N = 2048;
+  const uint32_t N = 2;
   Number::ComplexArray<fpxx> m(N, N);
   Number::ComplexArray<fpxx> n(m);
   Number::ComplexArray<fpxx> tempa(m);
   Number::ComplexArray<fpxx> &tempb = m;
-
+  Number::ComplexArray<fpxx> &impAmpl = tempa;
+  Number::ComplexArray<fpxx> expTotal(m);
+  Number::ComplexArray<fpxx> &expSide = expTotal;
+  Number::ComplexArray<fpxx> &g = expTotal;
   Number::Complex<fpxx> a((fpxx)0.0, (fpxx)1.0 / lambda);
+  Number::Complex<fpxx> expConst((fpxx)0.0, -2.0*M_PI / lambda);
 
   fpxx start_lin = -((double)N) / 2.0;
   start_lin *= dx;
@@ -36,6 +43,10 @@ int main()
   tempa = a;
   tempa /= tempb;
 
+  expTotal = tempb;
+  expTotal *= expConst;
+  expSide = expTotal.exp();
+  g *= impAmpl;
   /*dx = 8e-6;          %active pixel spacing
     dy = 8e-6;          %active pixel spacing
     M = 2 ^ ceil(log2(size(imge, 1)));
@@ -53,6 +64,12 @@ int main()
     tempa = i / lambda;
 
   tempb = sqrt(d ^ 2 + (m.*dx). ^ 2 + (n.*dy). ^ 2);*/
+
+   /* impAmpl = tempa. / tempb;                 %JW
+    expConst = -1i * 2 * pi / lambda;             %JW
+    expTotal = expConst.*tempb;             %JW
+    expSide = exp(expTotal);                %JW
+    g = impAmpl.*expSide;                     %JW*/
 
   return 0;
 }
