@@ -13,10 +13,14 @@ int main()
   const fpxx dx = (fpxx)8e-6;          // active pixel spacing
   const fpxx dy = (fpxx)8e-6;          // active pixel spacing
   const fpxx d = (fpxx)0.15;
+  const fpxx lambda = (fpxx)650e-9;                // Wavelength of light(peak....as its an LED!!)
   const uint32_t N = 2048;
   Number::ComplexArray<fpxx> m(N, N);
   Number::ComplexArray<fpxx> n(m);
+  Number::ComplexArray<fpxx> tempa(m);
   Number::ComplexArray<fpxx> &tempb = m;
+
+  Number::Complex<fpxx> a((fpxx)0.0, (fpxx)1.0 / lambda);
 
   fpxx start_lin = -((double)N) / 2.0;
   start_lin *= dx;
@@ -29,7 +33,9 @@ int main()
   m += n;
 
   tempb = m.sqrt();
-  
+  tempa = a;
+  tempa /= tempb;
+
   /*dx = 8e-6;          %active pixel spacing
     dy = 8e-6;          %active pixel spacing
     M = 2 ^ ceil(log2(size(imge, 1)));

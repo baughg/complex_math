@@ -16,6 +16,7 @@ namespace Number {
     ComplexArray& operator=(const Complex<T> &rhs);    
     ComplexArray& operator=(const T &rhs);
     ComplexArray& operator*=(const ComplexArray &rhs);
+    ComplexArray& operator/=(const ComplexArray &rhs);
     ComplexArray& operator+=(const ComplexArray &rhs);
     ComplexArray& operator=(const ComplexArray &rhs);
     ComplexArray& operator+=(const T &rhs);
@@ -87,6 +88,19 @@ namespace Number {
     for (uint32_t c = 0; c < cells; ++c)
     {
       array_[c] *= rhs.array_[c];
+    }
+
+    return *this;
+  }
+
+  template<class T>
+  ComplexArray<T>& ComplexArray<T>::operator/=(const ComplexArray<T> &rhs)
+  {
+    const uint32_t cells = M_ * N_;
+
+    for (uint32_t c = 0; c < cells; ++c)
+    {
+      array_[c] /= rhs.array_[c];
     }
 
     return *this;
