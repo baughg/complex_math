@@ -14,8 +14,8 @@ int main()
   const fpxx dy = (fpxx)8e-6;          // active pixel spacing
   const fpxx d = (fpxx)0.15;
   const fpxx lambda = (fpxx)650e-9;                // Wavelength of light(peak....as its an LED!!)
-  const uint32_t N = 2048;
-  //const uint32_t N = 2;
+  //const uint32_t N = 2048;
+  const uint32_t N = 16;
   Number::ComplexArray<fpxx> m(N, N);
   Number::ComplexArray<fpxx> n(m);
   Number::ComplexArray<fpxx> tempa(m);
@@ -25,8 +25,10 @@ int main()
   Number::ComplexArray<fpxx> &impAmpl = tempa;  
   Number::ComplexArray<fpxx> &expSide = expTotal;
   Number::ComplexArray<fpxx> &g = expTotal;
+  Number::ComplexArray<fpxx> &g_scale = m;
   Number::ComplexArray<fpxx> &G = g;
-  Number::Complex<fpxx> a((fpxx)0.0, (fpxx)1.0 / lambda);
+  Number::Complex<fpxx> a((fpxx)0.0, (fpxx)1.0);
+  Number::Complex<fpxx> a_scale((fpxx)1.0 / lambda, (fpxx)0.0);
   Number::Complex<fpxx> expConst((fpxx)0.0, -2.0*M_PI / lambda);
 
   fpxx start_lin = -((double)N) / 2.0;
@@ -47,9 +49,13 @@ int main()
   expTotal *= expConst;
   expSide = expTotal.exp();
   g *= impAmpl;
+  g_scale = g;
+  g_scale *= a_scale;
+  g.save("C:\\Movidius\\IntelLabs\\Code\\c\\g_in.dat");
   //g = Number::Complex<fpxx>(1.0, 1.0);
   //g.element(1, 1) = Number::Complex<fpxx>(0.5, 0.1);;
   g.fft();
+  g.save("C:\\Movidius\\IntelLabs\\Code\\c\\G_fft.dat");
   /*dx = 8e-6;          %active pixel spacing
     dy = 8e-6;          %active pixel spacing
     M = 2 ^ ceil(log2(size(imge, 1)));

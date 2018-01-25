@@ -2,6 +2,7 @@
 #define COMPLEX_ARRAY_H
 #include "complex.h"
 #include <vector>
+#include <string>
 #include <stdint.h>
 
 namespace Number {
@@ -13,6 +14,7 @@ namespace Number {
     ComplexArray(ComplexArray<T> &init);
     ~ComplexArray();
     void set_mn(uint32_t m, uint32_t n);
+    void save(const std::string &file_name);
     ComplexArray& operator=(const Complex<T> &rhs);    
     ComplexArray& operator=(const T &rhs);
     ComplexArray& operator*=(const ComplexArray &rhs);
@@ -80,6 +82,32 @@ namespace Number {
       return dummy;
 
     return array_[m*N_ + n];
+  }
+
+  template<class T>
+  void ComplexArray<T>::save(const std::string &file_name)
+  {
+    FILE* array_file = nullptr;
+
+    array_file = fopen(file_name.c_str(), "wb");
+    const uint32_t cells = M_ * N_;
+
+    T real, imag;
+
+    if (array_file)
+    {
+      fwrite(&M_, sizeof(M_), 1, array_file);
+      fwrite(&N_, sizeof(N_), 1, array_file);
+      
+      for (uint32_t c = 0; c < cells; ++c)
+      {
+        array_[c].get_components(real,imag);
+        fwrite(&real, sizeof(real), 1, array_file);
+        fwrite(&imag, sizeof(imag), 1, array_file);
+      }
+
+      fclose(array_file);
+    }
   }
 
   template<class T>

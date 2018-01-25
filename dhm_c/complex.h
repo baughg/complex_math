@@ -25,6 +25,7 @@ namespace Number {
     Complex& operator+=(const T &rhs);
     void sqrt();
     void exp();
+    void get_components(T &real, T &imag);
   private:
     T real_;
     T imag_;
@@ -77,6 +78,13 @@ namespace Number {
   {
     real_ = std::sqrt(real_);
     imag_ = (T)0.0;
+  }
+
+  template<class  T>
+  void Complex<T>::get_components(T &real, T &imag)
+  {
+    real = real_;
+    imag = imag_;
   }
 
   template<class  T>
