@@ -47,6 +47,7 @@ int main()
   expTotal *= expConst;
   expSide = expTotal.exp();
   g *= impAmpl;
+  g = 1.0;
   G = g.fft();
   /*dx = 8e-6;          %active pixel spacing
     dy = 8e-6;          %active pixel spacing

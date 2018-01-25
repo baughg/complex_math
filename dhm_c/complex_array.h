@@ -166,24 +166,54 @@ namespace Number {
   {
     const uint32_t cells = M_ * N_;
     
-    const T exponent = -(T)2.0 * (T)M_PI / (T)N_;
+    T exponent = -(T)2.0 * (T)M_PI / (T)N_;
     T ept = exponent;
     uint32_t offset = 0;
     ComplexArray<T> result(*this);
+    Complex<T> sum, prod;
 
     for (uint32_t y = 0; y < M_; ++y) {
       offset = y * N_;
 
       for (uint32_t k = 0; k < N_; ++k)
       {
+        sum = (T)0.0;
+
         for (uint32_t n = 0; n < N_; ++n)
         {
           ept = exponent * (T)(n * k);
           Complex<T> twiddle((T)0.0, ept);
           twiddle.exp();
-          result.array_[n + offset] = array_[n + offset];
-          result.array_[n + offset] *= twiddle;
+          prod = array_[n + offset];
+          prod *= twiddle;
+          sum += prod;
         }
+
+        result.array_[k + offset] = sum;
+      }
+    }
+
+    *this = result;
+    exponent = -(T)2.0 * (T)M_PI / (T)M_;
+
+    for (uint32_t x = 0; x < N_; ++x) {
+      offset = x * N_;
+
+      for (uint32_t k = 0; k < M_; ++k)
+      {
+        sum = (T)0.0;
+
+        for (uint32_t n = 0; n < M_; ++n)
+        {          
+          ept = exponent * (T)(n * k);
+          Complex<T> twiddle((T)0.0, ept);
+          twiddle.exp();
+          prod = array_[n*N_ + x];
+          prod *= twiddle;
+          sum += prod;
+        }
+
+        result.array_[k + offset] = sum;
       }
     }
 
