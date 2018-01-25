@@ -21,6 +21,7 @@ namespace Number {
     ComplexArray& operator+=(const ComplexArray &rhs);
     ComplexArray& operator=(const ComplexArray &rhs);
     ComplexArray& operator+=(const T &rhs);
+    Complex<T> &element(const uint32_t m, const uint32_t n);
     ComplexArray& sqrt();
     ComplexArray& exp();
     ComplexArray& fft();
@@ -68,6 +69,17 @@ namespace Number {
     M_ = m;
     N_ = n;
     array_.resize(M_*N_);
+  }
+
+  template<class T>
+  Complex<T> &ComplexArray<T>::element(const uint32_t m, const uint32_t n)
+  {
+    static Complex<T> dummy;
+
+    if (m >= M_ || n >= N_)
+      return dummy;
+
+    return array_[m*N_ + n];
   }
 
   template<class T>
