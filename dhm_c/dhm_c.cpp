@@ -5,8 +5,6 @@
 #include "complex.h"
 #include "complex_array.h"
 
-#define M_PI   3.14159265358979323846264338327950288
-
 int main()
 {
   typedef double fpxx;
@@ -21,11 +19,13 @@ int main()
   Number::ComplexArray<fpxx> m(N, N);
   Number::ComplexArray<fpxx> n(m);
   Number::ComplexArray<fpxx> tempa(m);
+
+  Number::ComplexArray<fpxx> &expTotal = n;
   Number::ComplexArray<fpxx> &tempb = m;
-  Number::ComplexArray<fpxx> &impAmpl = tempa;
-  Number::ComplexArray<fpxx> expTotal(m);
+  Number::ComplexArray<fpxx> &impAmpl = tempa;  
   Number::ComplexArray<fpxx> &expSide = expTotal;
   Number::ComplexArray<fpxx> &g = expTotal;
+  Number::ComplexArray<fpxx> &G = m;
   Number::Complex<fpxx> a((fpxx)0.0, (fpxx)1.0 / lambda);
   Number::Complex<fpxx> expConst((fpxx)0.0, -2.0*M_PI / lambda);
 
@@ -47,6 +47,7 @@ int main()
   expTotal *= expConst;
   expSide = expTotal.exp();
   g *= impAmpl;
+  G = g.fft();
   /*dx = 8e-6;          %active pixel spacing
     dy = 8e-6;          %active pixel spacing
     M = 2 ^ ceil(log2(size(imge, 1)));

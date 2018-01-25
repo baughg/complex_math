@@ -23,6 +23,7 @@ namespace Number {
     ComplexArray& operator+=(const T &rhs);
     ComplexArray& sqrt();
     ComplexArray& exp();
+    ComplexArray& fft();
     void linear_x(
       const T &start,       
       const T &step);
@@ -157,6 +158,36 @@ namespace Number {
       array_[c].exp();
     }
 
+    return *this;
+  }
+
+  template<class T>
+  ComplexArray<T>& ComplexArray<T>::fft()
+  {
+    const uint32_t cells = M_ * N_;
+    
+    const T exponent = -(T)2.0 * (T)M_PI / (T)N_;
+    T ept = exponent;
+    uint32_t offset = 0;
+    ComplexArray<T> result(*this);
+
+    for (uint32_t y = 0; y < M_; ++y) {
+      offset = y * N_;
+
+      for (uint32_t k = 0; k < N_; ++k)
+      {
+        for (uint32_t n = 0; n < N_; ++n)
+        {
+          ept = exponent * (T)(n * k);
+          Complex<T> twiddle((T)0.0, ept);
+          twiddle.exp();
+          result.array_[n + offset] = array_[n + offset];
+          result.array_[n + offset] *= twiddle;
+        }
+      }
+    }
+
+    *this = result;
     return *this;
   }
 
