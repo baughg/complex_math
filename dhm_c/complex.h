@@ -23,6 +23,7 @@ namespace Number {
     Complex& operator=(const Complex &rhs);
     Complex& operator=(const T &rhs);  
     Complex& operator+=(const T &rhs);
+    Complex& operator*=(const T &rhs);
     void sqrt();
     void exp();
     void get_components(T &real, T &imag);
@@ -107,6 +108,14 @@ namespace Number {
   Complex<T>& Complex<T>::operator+=(const T &rhs)
   {
     real_ += rhs;  
+    return *this;
+  }
+
+  template<class  T>
+  Complex<T>& Complex<T>::operator*=(const T &rhs)
+  {
+    real_ *= rhs;
+    imag_ *= rhs;
     return *this;
   }
 
